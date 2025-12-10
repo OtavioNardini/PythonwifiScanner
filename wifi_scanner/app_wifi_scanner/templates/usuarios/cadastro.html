@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a2332 0%, #1e2938 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 750px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 35px;
+        }
+
+        label {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 12px;
+            font-weight: 300;
+        }
+
+        input {
+            width: 100%;
+            padding: 20px 24px;
+            font-size: 18px;
+            background: rgba(30, 41, 56, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            background: rgba(30, 41, 56, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: 400;
+            background: rgba(40, 50, 65, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .register-btn:hover {
+            background: rgba(50, 60, 75, 0.9);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .login-text {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .login-link:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Registration</h1>
+        
+        <form action="{% url 'usuarios' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nome">Username</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Password</label>
+                <input type="password" id="senha" name="senha" required>
+            </div>
+
+            <button type="submit" class="register-btn">Register</button>
+
+            <div class="login-text">
+                Already have an account? <a href="{% url 'usuarios' %}" class="login-link">View Users</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

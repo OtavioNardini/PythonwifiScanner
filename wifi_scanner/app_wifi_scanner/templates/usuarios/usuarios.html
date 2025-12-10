@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(180deg, #1a1f2e 0%, #0f1419 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(30, 35, 48, 0.6);
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            font-size: 24px;
+        }
+
+        .nav-item {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: opacity 0.3s;
+        }
+
+        .nav-item:hover {
+            opacity: 0.7;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .user-icon {
+            width: 24px;
+            height: 24px;
+            background: #4a9eff;
+            border-radius: 50%;
+        }
+
+        .title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 300;
+        }
+
+        .add-user-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            background: #4a9eff;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .add-user-btn:hover {
+            background: #3a8eef;
+        }
+
+        .search-bar {
+            margin-bottom: 25px;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 14px 20px;
+            font-size: 16px;
+            background: rgba(30, 35, 48, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #4a9eff;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .users-table {
+            background: rgba(30, 35, 48, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(40, 45, 58, 0.8);
+        }
+
+        th {
+            padding: 20px 25px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 20px 25px;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(40, 45, 58, 0.4);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status.active {
+            background: rgba(74, 158, 255, 0.2);
+            color: #4a9eff;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 8px 18px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .edit-btn {
+            background: rgba(74, 158, 255, 0.2);
+            color: #4a9eff;
+        }
+
+        .edit-btn:hover {
+            background: rgba(74, 158, 255, 0.3);
+        }
+
+        .delete-btn {
+            background: rgba(224, 120, 70, 0.2);
+            color: #e07846;
+        }
+
+        .delete-btn:hover {
+            background: rgba(224, 120, 70, 0.3);
+        }
+
+        .no-users {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="logo">📡</div>
+                <a href="#" class="nav-item">Dashboard</a>
+                <a href="{% url 'usuarios' %}" class="nav-item">Users</a>
+                <a href="#" class="nav-item">Devices</a>
+            </div>
+            <div class="user">
+                <div class="user-icon"></div>
+                <span>admin</span>
+            </div>
+        </div>
+
+        <div class="title-section">
+            <h1>Users List</h1>
+            <a href="{% url 'cadastro' %}" class="add-user-btn">+ Add User</a>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search users..." onkeyup="filterUsers()">
+        </div>
+
+        <div class="users-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    {% if usuarios %}
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.id_usuario }}</td>
+                            <td>{{ usuario.nome }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="action-btn edit-btn">Edit</button>
+                                    <button class="action-btn delete-btn" onclick="deleteUser({{ usuario.id_usuario }})">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="no-users">
+                                No users registered yet. Click "+ Add User" to register your first user.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function filterUsers() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const tbody = document.getElementById('usersTableBody');
+            const rows = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const username = row.cells[1]?.textContent.toLowerCase() || '';
+                const email = row.cells[2]?.textContent.toLowerCase() || '';
+                
+                if (username.includes(filter) || email.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                // Aqui você pode adicionar a lógica de delete via AJAX ou form
+                alert('Delete functionality needs to be implemented in the backend');
+            }
+        }
+    </script>
+</body>
+</html>
