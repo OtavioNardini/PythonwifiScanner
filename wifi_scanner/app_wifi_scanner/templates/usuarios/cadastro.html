@@ -109,7 +109,19 @@
     <div class="container">
         <h1>User Registration</h1>
         
-        <form action="{% url 'usuarios' %}" method="post">
+        {% if erro %}
+        <div style="background: rgba(224, 120, 70, 0.2); border-left: 4px solid #e07846; padding: 20px; margin-bottom: 30px; border-radius: 8px; color: #e07846; font-size: 16px;">
+            ⚠️ {{ erro }}
+        </div>
+        {% endif %}
+        
+        {% if sucesso %}
+        <div style="background: rgba(74, 158, 255, 0.2); border-left: 4px solid #4a9eff; padding: 20px; margin-bottom: 30px; border-radius: 8px; color: #4a9eff; font-size: 16px;">
+            ✅ {{ sucesso }}
+        </div>
+        {% endif %}
+        
+        <form action="{% url 'cadastro' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <label for="nome">Username</label>
@@ -129,7 +141,7 @@
             <button type="submit" class="register-btn">Register</button>
 
             <div class="login-text">
-                Already have an account? <a href="{% url 'usuarios' %}" class="login-link">View Users</a>
+                Already have an account? <a href="{% url 'login' %}" class="login-link">Login</a>
             </div>
         </form>
     </div>

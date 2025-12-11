@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a2332 0%, #1e2938 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 750px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 35px;
+        }
+
+        label {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 12px;
+            font-weight: 300;
+        }
+
+        input {
+            width: 100%;
+            padding: 20px 24px;
+            font-size: 18px;
+            background: rgba(30, 41, 56, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            background: rgba(30, 41, 56, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 12px;
+        }
+
+        .forgot-password a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: #ffffff;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: 400;
+            background: rgba(40, 50, 65, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 25px;
+        }
+
+        .login-btn:hover {
+            background: rgba(50, 60, 75, 0.9);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .register-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .register-link:hover {
+            opacity: 0.7;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider-text {
+            padding: 0 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 16px;
+            font-size: 16px;
+            background: rgba(30, 41, 56, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-btn:hover {
+            background: rgba(30, 41, 56, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 16px;
+            margin: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        
+        {% if erro %}
+        <div style="background: rgba(224, 120, 70, 0.2); border-left: 4px solid #e07846; padding: 20px; margin-bottom: 30px; border-radius: 8px; color: #e07846; font-size: 16px;">
+            ⚠️ {{ erro }}
+        </div>
+        {% endif %}
+        
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember me</label>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+
+            <div class="divider">
+                <div class="divider-text">or continue with</div>
+            </div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Google
+                </button>
+                <button type="button" class="social-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    Facebook
+                </button>
+            </div>
+
+            <div class="register-text">
+                Don't have an account? <a href="{% url 'cadastro' %}" class="register-link">Register</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

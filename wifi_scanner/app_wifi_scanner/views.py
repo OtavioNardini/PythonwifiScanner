@@ -1,19 +1,62 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Usuario
 
-# Create your views here.
 def home(request):
+    # Verificar se o usuário está logado (via sessão)
+    if 'usuario_id' not in request.session:
+        return redirect('login')
     return render(request, 'usuarios/home.html')
+        
 def cadastro(request):
-    return render(request, 'usuarios/cadastro.html')
+    if request.method == 'GET':
+        return render(request, 'usuarios/cadastro.html')
+    else:
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        erro = None
+        
+        # Verificar se já existe usuário com o mesmo nome
+        if Usuario.objects.filter(nome=nome).exists():
+            erro = f"Username '{nome}' já existe. Escolha outro."
+        # Verificar se já existe usuário com o mesmo email
+        elif Usuario.objects.filter(email=email).exists():
+            erro = f"Email '{email}' já está registrado."
+        else:
+            # Se passou na validação, criar o usuário
+            novo_usuario = Usuario.objects.create(nome=nome, email=email, senha=senha)
+            novo_usuario.save()
+            return render(request, 'usuarios/cadastro.html', {'sucesso': 'Usuário cadastrado com sucesso!'})
+    
+    return render(request, 'usuarios/cadastro.html', {'erro': erro})
 
 def usuarios(request):
-    novo_usuario = Usuario()
-    novo_usuario.nome = request.POST.get('nome')
-    novo_usuario.email = request.POST.get('email')
-    novo_usuario.senha = request.POST.get('senha')
-    novo_usuario.save()
-    
+    # Verificar se o usuário está logado (via sessão)
+    if 'usuario_id' not in request.session:
+        return redirect('login')
     usuarios = {'usuarios': Usuario.objects.all()}
-    
     return render(request, 'usuarios/usuarios.html', usuarios)
+
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'usuarios/login.html')
+    else:
+        email = request.POST.get('email', '').strip()
+        senha = request.POST.get('password', '').strip()
+        
+        # Validar se os campos foram preenchidos
+        if not email or not senha:
+            return render(request, 'usuarios/login.html', {'erro': 'Email e senha são obrigatórios.'})
+        
+        # Verificar se o usuário existe com email e senha
+        usuario = Usuario.objects.filter(email=email, senha=senha).first()
+        if usuario:
+            request.session['usuario_id'] = usuario.id_usuario
+            request.session['usuario_nome'] = usuario.nome
+            request.session['usuario_email'] = usuario.email
+            request.session.set_expiry(86400)  # Sessão de 24 horas
+            return redirect('home')
+        else: 
+            return render(request, 'usuarios/login.html', {'erro': 'Email ou senha inválidos.'})
+    
+
