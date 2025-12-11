@@ -25,4 +25,5 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name='cadastro'),
     path('usuarios/', views.usuarios, name='usuarios'),
     path('login/', views.login, name='login'),
+    path('scan/', views.wifi_scan, name='wifi_scan'),
 ]

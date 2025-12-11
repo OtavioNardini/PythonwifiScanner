@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Usuario
+from .utils.wifi_scanner import scan_wifi_windows
+from django.http import JsonResponse
 
 def home(request):
     # Verificar se o usuário está logado (via sessão)
@@ -59,4 +61,8 @@ def login(request):
         else: 
             return render(request, 'usuarios/login.html', {'erro': 'Email ou senha inválidos.'})
     
+    
+def wifi_scan(request):
+    data = scan_wifi_windows()
+    return JsonResponse({"networks": data})
 
