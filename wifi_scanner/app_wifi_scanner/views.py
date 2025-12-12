@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Usuario
+from .models import Usuario, WifiScan
 from .utils.wifi_scanner import scan_wifi_windows
 from django.http import JsonResponse
+import json
 
 def home(request):
     # Verificar se o usuário está logado (via sessão)
@@ -65,4 +66,50 @@ def login(request):
 def wifi_scan(request):
     data = scan_wifi_windows()
     return JsonResponse({"networks": data})
+
+
+def save_wifi_scan(request):
+    """Salva o scan de Wi-Fi com data e hora"""
+    if 'usuario_id' not in request.session:
+        return JsonResponse({'erro': 'Usuário não autenticado'}, status=401)
+    
+    if request.method == 'POST':
+        try:
+            # Pega os dados do scan atual
+            networks_data = scan_wifi_windows()
+            
+            # Calcula estatísticas
+            validSignals = [int(n['signal']) for n in networks_data if n.get('signal')]
+            avg_signal = sum(validSignals) // len(validSignals) if validSignals else 0
+            
+            # Salva no banco de dados
+            usuario = Usuario.objects.get(id_usuario=request.session['usuario_id'])
+            wifi_scan_obj = WifiScan.objects.create(
+                usuario=usuario,
+                redes=networks_data,
+                total_networks=len(networks_data),
+                avg_signal=avg_signal
+            )
+            
+            return JsonResponse({
+                'sucesso': True,
+                'mensagem': 'Scan salvo com sucesso!',
+                'id': wifi_scan_obj.id,
+                'data_hora': wifi_scan_obj.data_hora.strftime('%d/%m/%Y %H:%M:%S')
+            })
+        except Exception as e:
+            return JsonResponse({'erro': str(e)}, status=500)
+    
+    return JsonResponse({'erro': 'Método não permitido'}, status=405)
+
+
+def historico_scans(request):
+    """Exibe o histórico de scans salvos"""
+    if 'usuario_id' not in request.session:
+        return redirect('login')
+    
+    usuario = Usuario.objects.get(id_usuario=request.session['usuario_id'])
+    scans = WifiScan.objects.filter(usuario=usuario)
+    
+    return render(request, 'usuarios/historico.html', {'scans': scans})
 

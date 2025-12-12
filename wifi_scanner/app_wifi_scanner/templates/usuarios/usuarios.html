@@ -217,13 +217,11 @@
         <div class="header">
             <div class="nav">
                 <div class="logo">📡</div>
-                <a href="#" class="nav-item">Dashboard</a>
-                <a href="{% url 'usuarios' %}" class="nav-item">Users</a>
-                <a href="#" class="nav-item">Devices</a>
+                <a href="{% url 'home' %}" class="nav-item">Dashboard</a>
             </div>
             <div class="user">
                 <div class="user-icon"></div>
-                <span>admin</span>
+                <span>{{ request.user.username }}</span>
             </div>
         </div>
 

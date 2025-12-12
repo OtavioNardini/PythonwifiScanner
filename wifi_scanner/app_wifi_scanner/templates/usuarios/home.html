@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -75,11 +75,118 @@
             font-weight: 300;
         }
 
-        .top-section {
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #4a9eff, #357abd);
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(74, 158, 255, 0.3);
+        }
+
+        .btn-save:active {
+            transform: translateY(0);
+        }
+
+        .btn-history {
+            background: rgba(74, 158, 255, 0.2);
+            color: #4a9eff;
+            border: 1px solid #4a9eff;
+        }
+
+        .btn-history:hover {
+            background: rgba(74, 158, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            background: #2ecc71;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        .notification.error {
+            background: #e07846;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(30, 35, 48, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #8a8f98;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 300;
+            color: #4a9eff;
+        }
+
+        .stat-value.warning {
+            color: #e07846;
+        }
+
+        .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            align-items: start;
         }
 
         .card {
@@ -95,181 +202,6 @@
             font-weight: 400;
         }
 
-        .networks-content {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-        }
-
-        .donut-chart {
-            position: relative;
-            width: 180px;
-            height: 180px;
-        }
-
-        .donut-chart svg {
-            transform: rotate(-90deg);
-        }
-
-        .legend {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 18px;
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .legend-dot.active {
-            background: #4a9eff;
-        }
-
-        .legend-dot.inactive {
-            background: #e07846;
-        }
-
-        .legend-text {
-            flex: 1;
-        }
-
-        .legend-value {
-            font-weight: 500;
-        }
-
-        .recommended-channel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 180px;
-            padding: 20px;
-        }
-
-        .channel-number {
-            font-size: 120px;
-            font-weight: 300;
-            line-height: 1;
-        }
-
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin-bottom: 30px;
-        }
-
-        .tab {
-            color: #8a8f98;
-            font-size: 18px;
-            cursor: pointer;
-            padding-bottom: 8px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            color: #ffffff;
-            border-bottom-color: #4a9eff;
-        }
-
-        .bottom-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 250px;
-        }
-
-        .bar-chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 200px;
-            gap: 15px;
-            padding: 0 20px;
-        }
-
-        .bar-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .bar {
-            width: 100%;
-            max-width: 45px;
-            background: #4a9eff;
-            border-radius: 4px 4px 0 0;
-            transition: all 0.3s;
-        }
-
-        .bar:hover {
-            opacity: 0.8;
-        }
-
-        .bar-label {
-            font-size: 14px;
-            color: #8a8f98;
-        }
-
-        .y-axis {
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 200px;
-            font-size: 14px;
-            color: #8a8f98;
-        }
-
-        .line-chart {
-            position: relative;
-            height: 200px;
-            padding: 0 20px;
-        }
-
-        .line-chart svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .x-axis-labels {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px 0;
-            font-size: 14px;
-            color: #8a8f98;
-        }
-
-        .y-axis-signal {
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 200px;
-            font-size: 14px;
-            color: #8a8f98;
-        }
-
-        /* Estilos para lista de Wi-Fi */
         #wifi-list {
             max-height: 600px;
             overflow-y: auto;
@@ -345,48 +277,71 @@
             font-size: 18px;
         }
 
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-            align-items: start;
+        .networks-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
         }
 
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+        .donut-chart {
+            position: relative;
+            width: 180px;
+            height: 180px;
+        }
+
+        .donut-chart svg {
+            transform: rotate(-90deg);
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
-            margin-bottom: 30px;
         }
 
-        .stat-card {
-            background: rgba(30, 35, 48, 0.8);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 18px;
         }
 
-        .stat-label {
-            font-size: 13px;
-            color: #8a8f98;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
         }
 
-        .stat-value {
-            font-size: 36px;
+        .legend-dot.active {
+            background: #4a9eff;
+        }
+
+        .legend-dot.inactive {
+            background: #e07846;
+        }
+
+        .legend-text {
+            flex: 1;
+        }
+
+        .legend-value {
+            font-weight: 500;
+        }
+
+        .recommended-channel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 180px;
+            padding: 20px;
+        }
+
+        .channel-number {
+            font-size: 120px;
             font-weight: 300;
-            color: #4a9eff;
+            line-height: 1;
         }
 
-        .stat-value.warning {
-            color: #e07846;
-        }
-
-        /* Estilos para top networks */
         .top-network-item {
             display: flex;
             align-items: center;
@@ -432,7 +387,15 @@
 
         <h1>Wi-Fi Networks Dashboard</h1>
 
-        <!-- Estatísticas gerais -->
+        <div class="button-group">
+            <button class="btn btn-save" id="btn-save-scan">
+                💾 Salvar Scan
+            </button>
+            <button class="btn btn-history" id="btn-historico">
+                📋 Ver Histórico
+            </button>
+        </div>
+
         <div class="stats-row">
             <div class="stat-card">
                 <div class="stat-label">Total Networks</div>
@@ -452,15 +415,12 @@
             </div>
         </div>
 
-        <!-- Grid principal: Lista de redes + Gráficos -->
         <div class="main-grid">
-            <!-- Lista de redes Wi-Fi -->
             <div class="card">
                 <div class="card-title">Detected Networks</div>
                 <div id="wifi-list" class="loading">Carregando redes Wi-Fi...</div>
             </div>
 
-            <!-- Coluna direita: Networks + Recommended Channel -->
             <div>
                 <div class="card" style="margin-bottom: 20px;">
                     <div class="card-title">Networks Overview</div>
@@ -495,7 +455,6 @@
             </div>
         </div>
 
-        <!-- Top 5 Strongest Networks -->
         <div class="card" style="margin-top: 40px; clear: both;">
             <div class="card-title">Top 5 Strongest Networks</div>
             <div id="top-networks" style="padding: 10px 0;">
@@ -505,10 +464,69 @@
     </div>
 
     <script>
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${isError ? 'error' : ''}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        async function saveScan() {
+            const btn = document.getElementById('btn-save-scan');
+            btn.disabled = true;
+            btn.textContent = '⏳ Salvando...';
+            
+            try {
+                const response = await fetch('/save-scan/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.sucesso) {
+                    showNotification(`✓ ${data.mensagem}`);
+                } else {
+                    showNotification(`Erro: ${data.erro || 'Não foi possível salvar'}`, true);
+                }
+            } catch (error) {
+                showNotification(`Erro: ${error.message}`, true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Salvar Scan';
+            }
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        document.getElementById('btn-save-scan').addEventListener('click', saveScan);
+        
+        document.getElementById('btn-historico').addEventListener('click', function() {
+            window.location.href = '/historico/';
+        });
+
         function updateTopNetworks(networks) {
             const topContainer = document.getElementById('top-networks');
             
-            // Ordena por sinal (maior primeiro)
             const sorted = networks
                 .filter(net => net.signal)
                 .sort((a, b) => parseInt(b.signal) - parseInt(a.signal))
@@ -532,17 +550,14 @@
         }
 
         function updateStatistics(networks) {
-            // Total de redes
             document.getElementById('stat-total').textContent = networks.length;
 
-            // Sinal médio
             const validSignals = networks.filter(n => n.signal).map(n => parseInt(n.signal));
             const avgSignal = validSignals.length > 0 
                 ? Math.round(validSignals.reduce((a, b) => a + b, 0) / validSignals.length)
                 : 0;
             document.getElementById('stat-avg-signal').textContent = avgSignal + '%';
 
-            // Canal mais usado
             const channelCount = {};
             networks.forEach(net => {
                 if (net.channel) {
@@ -560,7 +575,6 @@
             });
             document.getElementById('stat-most-channel').textContent = mostUsedChannel;
 
-            // Redes ocultas
             const hiddenCount = networks.filter(n => !n.ssid || n.ssid.trim() === '').length;
             document.getElementById('stat-hidden').textContent = hiddenCount;
         }
@@ -569,21 +583,17 @@
             const total = activeCount + inactiveCount;
             if (total === 0) return;
 
-            const circumference = 2 * Math.PI * 70; // raio = 70
+            const circumference = 2 * Math.PI * 70;
             const activePercent = activeCount / total;
             const inactivePercent = inactiveCount / total;
 
             const activeDash = circumference * activePercent;
             const inactiveDash = circumference * inactivePercent;
 
-            // Atualiza o círculo de inativos (laranja)
             document.getElementById('circle-inactive').setAttribute('stroke-dasharray', `${inactiveDash} ${circumference}`);
-            
-            // Atualiza o círculo de ativos (azul)
             document.getElementById('circle-active').setAttribute('stroke-dasharray', `${activeDash} ${circumference}`);
             document.getElementById('circle-active').setAttribute('stroke-dashoffset', `-${inactiveDash}`);
 
-            // Atualiza os números
             document.getElementById('active-count').textContent = activeCount;
             document.getElementById('inactive-count').textContent = inactiveCount;
         }
@@ -599,7 +609,6 @@
 
             if (Object.keys(channelCount).length === 0) return '-';
 
-            // Encontra o canal menos usado (entre 1, 6, 11 que são os não-overlapping)
             const preferredChannels = ['1', '6', '11'];
             let minCount = Infinity;
             let recommended = '1';
@@ -634,7 +643,6 @@
                     return;
                 }
 
-                // Calcula ativos vs inativos (sinal >= 50% = ativo)
                 let activeCount = 0;
                 let inactiveCount = 0;
 
@@ -643,7 +651,6 @@
                     const signalPercent = parseInt(net.signal) || 0;
                     const channel = net.channel || 'N/A';
                     
-                    // Considera ativo se sinal >= 50%
                     if (signalPercent >= 50) {
                         activeCount++;
                     } else {
@@ -666,17 +673,9 @@
                     `;
                 });
 
-                // Atualiza o gráfico donut
                 updateDonutChart(activeCount, inactiveCount);
-
-                // Atualiza canal recomendado
-                const recommendedCh = getRecommendedChannel(data.networks);
-                document.getElementById('recommended-channel').textContent = recommendedCh;
-
-                // Atualiza top 5 redes
+                document.getElementById('recommended-channel').textContent = getRecommendedChannel(data.networks);
                 updateTopNetworks(data.networks);
-
-                // Atualiza estatísticas
                 updateStatistics(data.networks);
 
             } catch (error) {
@@ -684,10 +683,7 @@
             }
         }
 
-        // Carrega as redes ao abrir a página
         loadNetworks();
-
-        // Atualiza a cada 5 segundos
         setInterval(loadNetworks, 5000);
     </script>
 </body>

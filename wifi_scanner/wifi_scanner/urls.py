@@ -26,4 +26,6 @@ urlpatterns = [
     path('usuarios/', views.usuarios, name='usuarios'),
     path('login/', views.login, name='login'),
     path('scan/', views.wifi_scan, name='wifi_scan'),
+    path('save-scan/', views.save_wifi_scan, name='save_wifi_scan'),
+    path('historico/', views.historico_scans, name='historico_scans'),
 ]
