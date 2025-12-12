@@ -113,3 +113,58 @@ def historico_scans(request):
     
     return render(request, 'usuarios/historico.html', {'scans': scans})
 
+
+def editar_usuario(request, id_usuario):
+    """Edita um usuário existente"""
+    if 'usuario_id' not in request.session:
+        return redirect('login')
+    
+    try:
+        usuario = Usuario.objects.get(id_usuario=id_usuario)
+    except Usuario.DoesNotExist:
+        return redirect('usuarios')
+    
+    if request.method == 'GET':
+        return render(request, 'usuarios/editar.html', {'usuario': usuario})
+    else:
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        erro = None
+        
+        # Verificar se já existe usuário com o mesmo nome (exceto o próprio)
+        if Usuario.objects.filter(nome=nome).exclude(id_usuario=id_usuario).exists():
+            erro = f"Username '{nome}' já existe. Escolha outro."
+        # Verificar se já existe usuário com o mesmo email (exceto o próprio)
+        elif Usuario.objects.filter(email=email).exclude(id_usuario=id_usuario).exists():
+            erro = f"Email '{email}' já está registrado."
+        else:
+            # Atualizar o usuário
+            usuario.nome = nome
+            usuario.email = email
+            if senha:  # Só atualiza a senha se foi fornecida
+                usuario.senha = senha
+            usuario.save()
+            return redirect('usuarios')
+        
+        return render(request, 'usuarios/editar.html', {'usuario': usuario, 'erro': erro})
+
+
+def deletar_usuario(request, id_usuario):
+    """Deleta um usuário"""
+    if 'usuario_id' not in request.session:
+        return redirect('login')
+    
+    if request.method == 'POST':
+        try:
+            usuario = Usuario.objects.get(id_usuario=id_usuario)
+            # Não permitir que o usuário delete a si mesmo
+            if usuario.id_usuario == request.session['usuario_id']:
+                return JsonResponse({'erro': 'Você não pode deletar sua própria conta.'}, status=400)
+            usuario.delete()
+            return JsonResponse({'sucesso': True, 'mensagem': 'Usuário deletado com sucesso!'})
+        except Usuario.DoesNotExist:
+            return JsonResponse({'erro': 'Usuário não encontrado.'}, status=404)
+    
+    return JsonResponse({'erro': 'Método não permitido'}, status=405)
+

@@ -255,7 +255,7 @@
                             <td><span class="status active">Active</span></td>
                             <td>
                                 <div class="actions">
-                                    <button class="action-btn edit-btn">Edit</button>
+                                    <a href="{% url 'editar_usuario' usuario.id_usuario %}" class="action-btn edit-btn" style="text-decoration: none;">Edit</a>
                                     <button class="action-btn delete-btn" onclick="deleteUser({{ usuario.id_usuario }})">Delete</button>
                                 </div>
                             </td>
@@ -294,10 +294,42 @@
         }
 
         function deleteUser(userId) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                // Aqui você pode adicionar a lógica de delete via AJAX ou form
-                alert('Delete functionality needs to be implemented in the backend');
+            if (confirm('Tem certeza que deseja deletar este usuário?')) {
+                fetch(`/usuarios/deletar/${userId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        alert(data.mensagem);
+                        location.reload();
+                    } else {
+                        alert(data.erro || 'Erro ao deletar usuário');
+                    }
+                })
+                .catch(error => {
+                    alert('Erro ao deletar usuário: ' + error);
+                });
             }
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     </script>
 </body>
