@@ -1,6 +1,12 @@
 from django.db import models
 import json
 
+from django.utils.translation import gettext_lazy as _
+from django.db import models
+
+class Produto(models.Model):
+    nome = models.CharField(verbose_name=_('Name'), max_length=100)
+
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)

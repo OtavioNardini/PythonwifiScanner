@@ -3,6 +3,7 @@ from .models import Usuario, WifiScan
 from .utils.wifi_scanner import scan_wifi_windows
 from django.http import JsonResponse
 import json
+from django.utils.translation import gettext_lazy as _
 
 def home(request):
     # Verificar se o usuário está logado (via sessão)

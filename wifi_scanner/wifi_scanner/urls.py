@@ -15,12 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
 from app_wifi_scanner import views
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),  # Para trocar de idioma
+]
+
+# URLs com suporte a internacionalização
+urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
-    #pagina principal
+    # Página principal
     path('', views.home, name='home'),
     path('cadastro/', views.cadastro, name='cadastro'),
     path('usuarios/', views.usuarios, name='usuarios'),
@@ -30,4 +36,4 @@ urlpatterns = [
     path('scan/', views.wifi_scan, name='wifi_scan'),
     path('save-scan/', views.save_wifi_scan, name='save_wifi_scan'),
     path('historico/', views.historico_scans, name='historico_scans'),
-]
+)

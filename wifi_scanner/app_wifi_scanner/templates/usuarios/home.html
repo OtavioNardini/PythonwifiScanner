@@ -1,10 +1,10 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ LANGUAGE_CODE|default:'pt-br' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wi-Fi Networks Dashboard</title>
+    <title>{% trans "Wi-Fi Networks Dashboard" %}</title>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
     <style>
         /* Estilos específicos do home.html */
@@ -167,15 +167,22 @@
             background: rgba(74, 158, 255, 0.3);
             transform: translateY(-2px);
         }
+
+        .language-selector-wrapper {
+            margin-right: 14px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="nav">
-                <div class="logo">☁ Wi-Fi Scanner</div>
+                <div class="logo">☁ {% trans "Wi-Fi Scanner" %}</div>
             </div>
             <div class="nav-right">
+                <div class="language-selector-wrapper">
+                    {% include 'usuarios/language_selector.html' %}
+                </div>
                 <div class="theme-toggle">
                     <span class="theme-icon">🌙</span>
                     <div class="toggle-switch">
@@ -189,45 +196,45 @@
             </div>
         </div>
 
-        <h1>Wi-Fi Networks Dashboard</h1>
+        <h1>{% trans "Wi-Fi Networks Dashboard" %}</h1>
 
         <div class="button-group">
             <button class="btn btn-save" id="btn-save-scan">
-                💾 Salvar Scan
+                💾 {% trans "Salvar Scan" %}
             </button>
             <button class="btn btn-history" id="btn-historico">
-                📋 Ver Histórico
+                📋 {% trans "Ver Histórico" %}
             </button>
         </div>
 
         <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-label">Total Networks</div>
+                <div class="stat-label">{% trans "Total de Redes" %}</div>
                 <div class="stat-value" id="stat-total">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Average Signal</div>
+                <div class="stat-label">{% trans "Sinal Médio" %}</div>
                 <div class="stat-value" id="stat-avg-signal">0%</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Most Used Channel</div>
+                <div class="stat-label">{% trans "Canal Mais Usado" %}</div>
                 <div class="stat-value" id="stat-most-channel">-</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Hidden Networks</div>
+                <div class="stat-label">{% trans "Redes Ocultas" %}</div>
                 <div class="stat-value warning" id="stat-hidden">0</div>
             </div>
         </div>
 
         <div class="main-grid">
             <div class="card">
-                <div class="card-title">Detected Networks</div>
-                <div id="wifi-list" class="loading">Carregando redes Wi-Fi...</div>
+                <div class="card-title">{% trans "Redes Detectadas" %}</div>
+                <div id="wifi-list" class="loading">{% trans "Carregando redes Wi-Fi..." %}</div>
             </div>
 
             <div>
                 <div class="card" style="margin-bottom: 20px;">
-                    <div class="card-title">Networks Overview</div>
+                    <div class="card-title">{% trans "Visão Geral das Redes" %}</div>
                     <div class="networks-content">
                         <div class="donut-chart">
                             <svg width="180" height="180" id="donut-svg">
@@ -238,12 +245,12 @@
                         <div class="legend">
                             <div class="legend-item">
                                 <div class="legend-dot active"></div>
-                                <span class="legend-text">Strong Signal</span>
+                                <span class="legend-text">{% trans "Sinal Forte" %}</span>
                                 <span class="legend-value" id="active-count">0</span>
                             </div>
                             <div class="legend-item">
                                 <div class="legend-dot inactive"></div>
-                                <span class="legend-text">Weak Signal</span>
+                                <span class="legend-text">{% trans "Sinal Fraco" %}</span>
                                 <span class="legend-value" id="inactive-count">0</span>
                             </div>
                         </div>
@@ -251,7 +258,7 @@
                 </div>
 
                 <div class="card" style="min-height: 250px;">
-                    <div class="card-title">Recommended Channel</div>
+                    <div class="card-title">{% trans "Canal Recomendado" %}</div>
                     <div class="recommended-channel">
                         <div class="channel-number" id="recommended-channel">-</div>
                     </div>
@@ -260,14 +267,27 @@
         </div>
 
         <div class="card" style="margin-top: 40px; clear: both;">
-            <div class="card-title">Top 5 Strongest Networks</div>
+            <div class="card-title">{% trans "Top 5 Redes Mais Fortes" %}</div>
             <div id="top-networks" style="padding: 10px 0;">
-                <div class="loading">Carregando...</div>
+                <div class="loading">{% trans "Carregando..." %}</div>
             </div>
         </div>
     </div>
 
     <script>
+        const i18nTexts = {
+            saving: "{% trans 'Salvando...' %}",
+            saveLabel: "{% trans 'Salvar Scan' %}",
+            errorPrefix: "{% trans 'Erro' %}",
+            errorSaveFallback: "{% trans 'Não foi possível salvar' %}",
+            noNetwork: "{% trans 'Nenhuma rede detectada' %}",
+            hiddenNetwork: "{% trans 'Rede Oculta' %}",
+            loadingNetworks: "{% trans 'Carregando redes Wi-Fi...' %}",
+            noWifiFound: "{% trans 'Nenhuma rede Wi-Fi encontrada.' %}",
+            channel: "{% trans 'Canal' %}",
+            loadErrorPrefix: "{% trans 'Erro ao carregar redes' %}"
+        };
+
         function showNotification(message, isError = false) {
             const notification = document.createElement('div');
             notification.className = `notification ${isError ? 'error' : ''}`;
@@ -282,7 +302,7 @@
         async function saveScan() {
             const btn = document.getElementById('btn-save-scan');
             btn.disabled = true;
-            btn.textContent = '⏳ Salvando...';
+            btn.textContent = `⏳ ${i18nTexts.saving}`;
             
             try {
                 const response = await fetch('/save-scan/', {
@@ -297,13 +317,13 @@
                 if (response.ok && data.sucesso) {
                     showNotification(`✓ ${data.mensagem}`);
                 } else {
-                    showNotification(`Erro: ${data.erro || 'Não foi possível salvar'}`, true);
+                    showNotification(`${i18nTexts.errorPrefix}: ${data.erro || i18nTexts.errorSaveFallback}`, true);
                 }
             } catch (error) {
-                showNotification(`Erro: ${error.message}`, true);
+                showNotification(`${i18nTexts.errorPrefix}: ${error.message}`, true);
             } finally {
                 btn.disabled = false;
-                btn.textContent = '💾 Salvar Scan';
+                btn.textContent = `💾 ${i18nTexts.saveLabel}`;
             }
         }
 
@@ -337,7 +357,7 @@
                 .slice(0, 5);
 
             if (sorted.length === 0) {
-                topContainer.innerHTML = '<div class="loading">Nenhuma rede detectada</div>';
+                topContainer.innerHTML = `<div class="loading">${i18nTexts.noNetwork}</div>`;
                 return;
             }
 
@@ -346,7 +366,7 @@
                 topContainer.innerHTML += `
                     <div class="top-network-item">
                         <div class="top-network-rank">#${index + 1}</div>
-                        <div class="top-network-name">${net.ssid || 'Rede Oculta'}</div>
+                        <div class="top-network-name">${net.ssid || i18nTexts.hiddenNetwork}</div>
                         <div class="top-network-signal">${net.signal}%</div>
                     </div>
                 `;
@@ -436,12 +456,12 @@
                 const data = await res.json();
 
                 if (data.error) {
-                    container.innerHTML = `<div class="loading" style="color: #e07846;">Erro: ${data.error}</div>`;
+                    container.innerHTML = `<div class="loading" style="color: #e07846;">${i18nTexts.errorPrefix}: ${data.error}</div>`;
                     return;
                 }
 
                 if (!data.networks || data.networks.length === 0) {
-                    container.innerHTML = '<div class="loading">Nenhuma rede Wi-Fi encontrada.</div>';
+                    container.innerHTML = `<div class="loading">${i18nTexts.noWifiFound}</div>`;
                     updateDonutChart(0, 0);
                     document.getElementById('recommended-channel').textContent = '-';
                     return;
@@ -464,8 +484,8 @@
                     container.innerHTML += `
                         <div class="wifi-item">
                             <div class="wifi-main-info">
-                                <div class="wifi-ssid">${net.ssid || '🔒 Rede Oculta'}</div>
-                                <div class="wifi-channel">Canal ${channel}</div>
+                                <div class="wifi-ssid">${net.ssid || `🔒 ${i18nTexts.hiddenNetwork}`}</div>
+                                <div class="wifi-channel">${i18nTexts.channel} ${channel}</div>
                             </div>
                             <div class="wifi-signal">
                                 <div class="signal-bar">
@@ -483,7 +503,7 @@
                 updateStatistics(data.networks);
 
             } catch (error) {
-                container.innerHTML = `<div class="loading" style="color: #e07846;">Erro ao carregar redes: ${error.message}</div>`;
+                container.innerHTML = `<div class="loading" style="color: #e07846;">${i18nTexts.loadErrorPrefix}: ${error.message}</div>`;
             }
         }
 

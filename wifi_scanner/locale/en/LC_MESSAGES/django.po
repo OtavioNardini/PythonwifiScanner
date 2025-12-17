@@ -1,0 +1,177 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-16 20:43-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\app_wifi_scanner\models.py:8
+msgid "Name"
+msgstr "Name"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:7
+msgid "Histórico de Scans - Wi-Fi Networks"
+msgstr "Scan History - Wi-Fi Networks"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:76
+#: .\app_wifi_scanner\templates\usuarios\home.html:180
+msgid "Wi-Fi Scanner"
+msgstr "Wi-Fi Scanner"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:95
+msgid "Histórico de Scans"
+msgstr "Scan History"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:97
+#: .\app_wifi_scanner\templates\usuarios\historico.html:143
+msgid "Voltar ao Dashboard"
+msgstr "Back to Dashboard"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:104
+#, python-format
+msgid "Scan #%(scan.id)s"
+msgstr "Scan #%(scan.id)s"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:110
+#: .\app_wifi_scanner\templates\usuarios\historico.html:156
+#: .\app_wifi_scanner\templates\usuarios\home.html:212
+msgid "Total de Redes"
+msgstr "Total Networks"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:114
+#: .\app_wifi_scanner\templates\usuarios\historico.html:160
+#: .\app_wifi_scanner\templates\usuarios\home.html:216
+msgid "Sinal Médio"
+msgstr "Average Signal"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:120
+msgid "Primeiras 5 redes detectadas:"
+msgstr "First 5 detected networks:"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:123
+#: .\app_wifi_scanner\templates\usuarios\historico.html:174
+#: .\app_wifi_scanner\templates\usuarios\home.html:284
+msgid "Rede Oculta"
+msgstr "Hidden Network"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:125
+#: .\app_wifi_scanner\templates\usuarios\historico.html:175
+#: .\app_wifi_scanner\templates\usuarios\home.html:287
+msgid "Canal"
+msgstr "Channel"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:132
+msgid "mais redes..."
+msgstr "more networks..."
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:142
+msgid "Nenhum scan foi salvo ainda"
+msgstr "No scan saved yet"
+
+#: .\app_wifi_scanner\templates\usuarios\historico.html:166
+msgid "Todas as Redes Detectadas:"
+msgstr "All Detected Networks:"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:7
+#: .\app_wifi_scanner\templates\usuarios\home.html:199
+msgid "Wi-Fi Networks Dashboard"
+msgstr "Wi-Fi Networks Dashboard"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:203
+#: .\app_wifi_scanner\templates\usuarios\home.html:280
+msgid "Salvar Scan"
+msgstr "Save Scan"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:206
+msgid "Ver Histórico"
+msgstr "View History"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:220
+msgid "Canal Mais Usado"
+msgstr "Most Used Channel"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:224
+msgid "Redes Ocultas"
+msgstr "Hidden Networks"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:231
+msgid "Redes Detectadas"
+msgstr "Detected Networks"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:232
+#: .\app_wifi_scanner\templates\usuarios\home.html:285
+msgid "Carregando redes Wi-Fi..."
+msgstr "Loading Wi-Fi networks..."
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:237
+msgid "Visão Geral das Redes"
+msgstr "Networks Overview"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:248
+msgid "Sinal Forte"
+msgstr "Strong Signal"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:253
+msgid "Sinal Fraco"
+msgstr "Weak Signal"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:261
+msgid "Canal Recomendado"
+msgstr "Recommended Channel"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:270
+msgid "Top 5 Redes Mais Fortes"
+msgstr "Top 5 Strongest Networks"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:272
+msgid "Carregando..."
+msgstr "Loading..."
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:279
+msgid "Salvando..."
+msgstr "Saving..."
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:281
+msgid "Erro"
+msgstr "Error"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:282
+msgid "Não foi possível salvar"
+msgstr "Could not save"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:283
+msgid "Nenhuma rede detectada"
+msgstr "No network detected"
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:286
+msgid "Nenhuma rede Wi-Fi encontrada."
+msgstr "No Wi-Fi network found."
+
+#: .\app_wifi_scanner\templates\usuarios\home.html:288
+msgid "Erro ao carregar redes"
+msgstr "Error loading networks"
+
+#: .\wifi_scanner\settings.py:124
+msgid "Português (Brasil)"
+msgstr "Portuguese (Brazil)"
+
+#: .\wifi_scanner\settings.py:125
+msgid "English"
+msgstr "English"
+
+#: .\wifi_scanner\settings.py:126
+msgid "Español"
+msgstr "Spanish"

@@ -1,18 +1,13 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ LANGUAGE_CODE|default:'pt-br' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Scans - Wi-Fi Networks</title>
+    <title>{% trans "Histórico de Scans - Wi-Fi Networks" %}</title>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
@@ -21,376 +16,69 @@
             padding: 20px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; }
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 30px;
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            margin-bottom: 40px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 30px; background: var(--bg-tertiary);
+            border-radius: 12px; margin-bottom: 40px;
+            border: 1px solid var(--border-color); transition: all 0.3s ease;
         }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .logo {
-            font-size: 24px;
-            color: var(--text-primary);
-        }
-
-        .nav-item {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 18px;
-            transition: opacity 0.3s;
-        }
-
-        .nav-item:hover {
-            opacity: 0.7;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-        }
-
-        .user-icon {
-            width: 24px;
-            color: var(--text-primary);
-        }
-
+        .nav { display: flex; align-items: center; gap: 40px; }
+        .logo { font-size: 24px; color: var(--text-primary); }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .language-selector-wrapper { margin-right: 6px; }
+        .user { display: flex; align-items: center; gap: 10px; font-size: 16px; }
+        .user-icon { width: 24px; color: var(--text-primary); }
         .btn-voltar {
-            display: inline-block;
-            padding: 12px 24px;
-            background: rgba(74, 158, 255, 0.2);
-            color: var(--accent-color);
-            border: 1px solid var(--accent-color);
-            border-radius: 8px;
-            text-decoration: none;
-            margin-bottom: 30px;
-            transition: all 0.3s;
-            cursor: pointer;
-            font-size: 16px;
+            display: inline-block; padding: 12px 24px; background: rgba(74, 158, 255, 0.2);
+            color: var(--accent-color); border: 1px solid var(--accent-color);
+            border-radius: 8px; text-decoration: none; margin-bottom: 30px;
+            transition: all 0.3s; cursor: pointer; font-size: 16px;
         }
-
-        .btn-voltar:hover {
-            background: rgba(74, 158, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
+        .btn-voltar:hover { background: rgba(74, 158, 255, 0.3); transform: translateY(-2px); }
         .scan-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(74, 158, 255, 0.2);
-            transition: all 0.3s;
-            cursor: pointer;
+            background: var(--bg-card); border-radius: 12px; padding: 25px; margin-bottom: 20px;
+            border: 1px solid rgba(74, 158, 255, 0.2); transition: all 0.3s; cursor: pointer;
         }
-
-        .scan-card:hover {
-            background: rgba(30, 35, 48, 0.95);
-            border-color: var(--accent-color);
-            box-shadow: 0 8px 16px rgba(74, 158, 255, 0.1);
-        }
-
-        .scan-titulo {
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--accent-color);
-        }
-
-        .scan-data {
-            font-size: 14px;
-            color: var(--text-tertiary);
-        }
-
-        .stat {
-            background: rgba(20, 25, 35, 0.5);
-            padding: 12px 15px;
-            border-radius: 8px;
-            border-left: 3px solid var(--accent-color);
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--accent-color);
-        }
-
-        .networks-preview {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .networks-preview-title {
-            font-size: 14px;
-            color: var(--text-tertiary);
-            margin-bottom: 10px;
-        }
-
-        .network-item-preview {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            font-size: 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .network-name {
-            flex: 1;
-            color: var(--text-primary);
-        }
-
-        .network-info {
-            display: flex;
-            gap: 20px;
-            color: var(--text-tertiary);
-        }
-
-        .empty-state {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 60px 20px;
-            text-align: center;
-            border: 1px solid rgba(74, 158, 255, 0.2);
-        }
-
-        .empty-state-text {
-            font-size: 18px;
-            color: var(--text-tertiary);
-            margin-bottom: 20px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: rgba(30, 35, 48, 0.95);
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 1px solid rgba(74, 158, 255, 0.3);
-            position: relative;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--accent-color);
-        }
-
-        .modal-datetime {
-            font-size: 14px;
-            color: var(--text-tertiary);
-            margin-bottom: 20px;
-        }
-
-        .network-detail {
-            background: rgba(20, 25, 35, 0.5);
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            border-left: 3px solid var(--accent-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .network-detail-ssid {
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-
-        .network-detail-channel {
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-
-        .signal-bar-mini-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #e07846, var(--accent-color));
-        }
-
-        .signal-value {
-            font-weight: 500;
-            color: var(--accent-color)
-        .networks-list {
-            margin-top: 20px;
-        }
-
-        .network-detail {
-            background: rgba(20, 25, 35, 0.5);
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            border-left: 3px solid #4a9eff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .network-detail-info {
-            flex: 1;
-        }
-
-        .network-detail-ssid {
-            font-weight: 500;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-
-        .network-detail-channel {
-            font-size: 12px;
-            color: #8a8f98;
-        }
-
-        .network-detail-signal {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-width: 100px;
-            justify-content: flex-end;
-        }
-
-        .signal-bar-mini {
-            width: 60px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .signal-bar-mini-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #e07846, #4a9eff);
-        }
-
-        .signal-value {
-            font-weight: 500;
-            color: #4a9eff;
-            min-width: 35px;
-            text-align: right;
-        }
+        .scan-card:hover { background: rgba(30, 35, 48, 0.95); border-color: var(--accent-color); box-shadow: 0 8px 16px rgba(74, 158, 255, 0.1); }
+        .scan-titulo { font-size: 20px; font-weight: 500; color: var(--accent-color); }
+        .scan-data { font-size: 14px; color: var(--text-tertiary); }
+        .stat { background: rgba(20, 25, 35, 0.5); padding: 12px 15px; border-radius: 8px; border-left: 3px solid var(--accent-color); }
+        .stat-label { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 5px; }
+        .stat-value { font-size: 18px; font-weight: 500; color: var(--accent-color); }
+        .networks-preview { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); }
+        .networks-preview-title { font-size: 14px; color: var(--text-tertiary); margin-bottom: 10px; }
+        .network-item-preview { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .network-name { flex: 1; color: var(--text-primary); }
+        .network-info { display: flex; gap: 20px; color: var(--text-tertiary); }
+        .empty-state { background: var(--bg-card); border-radius: 12px; padding: 60px 20px; text-align: center; border: 1px solid rgba(74, 158, 255, 0.2); }
+        .empty-state-text { font-size: 18px; color: var(--text-tertiary); margin-bottom: 20px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: rgba(30, 35, 48, 0.95); border-radius: 12px; padding: 30px; max-width: 800px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(74, 158, 255, 0.3); position: relative; }
+        .modal-title { font-size: 24px; margin-bottom: 20px; color: var(--accent-color); }
+        .modal-datetime { font-size: 14px; color: var(--text-tertiary); margin-bottom: 20px; }
+        .networks-list { margin-top: 20px; }
+        .network-detail { background: rgba(20, 25, 35, 0.5); padding: 12px 15px; margin-bottom: 8px; border-radius: 8px; border-left: 3px solid #4a9eff; display: flex; justify-content: space-between; align-items: center; }
+        .network-detail-info { flex: 1; }
+        .network-detail-ssid { font-weight: 500; color: #ffffff; margin-bottom: 4px; }
+        .network-detail-channel { font-size: 12px; color: #8a8f98; }
+        .network-detail-signal { display: flex; align-items: center; gap: 8px; min-width: 100px; justify-content: flex-end; }
+        .signal-bar-mini { width: 60px; height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
+        .signal-bar-mini-fill { height: 100%; background: linear-gradient(90deg, #e07846, #4a9eff); }
+        .signal-value { font-weight: 500; color: #4a9eff; min-width: 35px; text-align: right; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="nav">
-                <div class="logo">☁</div>
-            </div>
-            <div class="user">
-                <div class="user-icon"></div>
-                <span>{{ request.session.usuario_nome }}</span>
-            </div>
-        </div>
-
-        <h1>📋 Histórico de Scans</h1>
-
-        <button class="btn-voltar" onclick="window.location.href='/'">← Voltar ao Dashboard</button>
-
-        {% if scans %}
-            <div id="scans-container">
-                {% for scan in scans %}
-                    <div class="scan-card" onclick="openModal({{ scan.id }})">
-                        <div class="scan-header">
-                            <div class="scan-titulo">Scan #{{ scan.id }}</div>
-                            <div class="scan-data">📅 {{ scan.data_hora|date:"d/m/Y H:i:s" }}</div>
-                        </div>
-
-                        <div class="scan-stats">
-                            <div class="stat">
-                                <div class="stat-label">Total de Redes</div>
-                                <div class="stat-value">{{ scan.total_networks }}</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Sinal Médio</div>
-                                <div class="stat-value">{{ scan.avg_signal }}%</div>
-                            </div>
-                        </div>
-
-                        <div class="networks-preview">
-                            <div class="networks-preview-title">Primeiras 5 redes detectadas:</div>
-                            {% for network in scan.redes|slice:":5" %}
-                                <div class="network-item-preview">
-                                    <span class="network-name">{{ network.ssid|default:"🔒 Rede Oculta" }}</span>
-                                    <div class="network-info">
-                                        <span>Canal {{ network.channel|default:"N/A" }}</span>
-                                        <span style="color: #4a9eff;">{{ network.signal }}%</span>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                            {% if scan.redes|length > 5 %}
-                                <div style="text-align: center; padding: 10px 0; color: #8a8f98; font-size: 12px;">
-                                    +{{ scan.redes|length|add:"-5" }} mais redes...
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <div class="empty-state-icon">📭</div>
-                <div class="empty-state-text">Nenhum scan foi salvo ainda</div>
-                <a class="btn-voltar" href="/" style="display: inline-block;">Voltar ao Dashboard</a>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Modal para ver detalhes -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-cl Wi-Fi Scanner</div>
+                <div class="logo">☁ {% trans "Wi-Fi Scanner" %}</div>
             </div>
             <div class="nav-right">
+                <div class="language-selector-wrapper">
+                    {% include 'usuarios/language_selector.html' %}
+                </div>
                 <div class="theme-toggle">
                     <span class="theme-icon">🌙</span>
                     <div class="toggle-switch">
@@ -400,25 +88,93 @@
                 <div class="user">
                     <div class="user-icon"></div>
                     <span>{{ request.session.usuario_nome }}</span>
-                </divrepeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
+                </div>
+            </div>
+        </div>
+
+        <h1>📋 {% trans "Histórico de Scans" %}</h1>
+
+        <button class="btn-voltar" onclick="window.location.href='/'">← {% trans "Voltar ao Dashboard" %}</button>
+
+        {% if scans %}
+            <div id="scans-container">
+                {% for scan in scans %}
+                    <div class="scan-card" onclick="openModal({{ scan.id }})">
+                        <div class="scan-header">
+                            <div class="scan-titulo">{% blocktrans %}Scan #{{ scan.id }}{% endblocktrans %}</div>
+                            <div class="scan-data">📅 {{ scan.data_hora|date:"d/m/Y H:i:s" }}</div>
+                        </div>
+
+                        <div class="scan-stats">
+                            <div class="stat">
+                                <div class="stat-label">{% trans "Total de Redes" %}</div>
+                                <div class="stat-value">{{ scan.total_networks }}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">{% trans "Sinal Médio" %}</div>
+                                <div class="stat-value">{{ scan.avg_signal }}%</div>
+                            </div>
+                        </div>
+
+                        <div class="networks-preview">
+                            <div class="networks-preview-title">{% trans "Primeiras 5 redes detectadas:" %}</div>
+                            {% for network in scan.redes|slice:":5" %}
+                                <div class="network-item-preview">
+                                    <span class="network-name">{{ network.ssid|default:"🔒 "|add:_('Rede Oculta') }}</span>
+                                    <div class="network-info">
+                                        <span>{% trans "Canal" %} {{ network.channel|default:"N/A" }}</span>
+                                        <span style="color: #4a9eff;">{{ network.signal }}%</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if scan.redes|length > 5 %}
+                                <div style="text-align: center; padding: 10px 0; color: #8a8f98; font-size: 12px;">
+                                    +{{ scan.redes|length|add:"-5" }} {% trans "mais redes..." %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <div class="empty-state-text">{% trans "Nenhum scan foi salvo ainda" %}</div>
+                <a class="btn-voltar" href="/" style="display: inline-block;">{% trans "Voltar ao Dashboard" %}</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal para ver detalhes -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="btn-voltar" style="margin-bottom:15px;" onclick="closeModal()">×</button>
+            <div class="modal-title" id="modal-title"></div>
+            <div class="modal-datetime" id="modal-datetime"></div>
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
                 <div class="stat">
-                    <div class="stat-label">Total de Redes</div>
+                    <div class="stat-label">{% trans "Total de Redes" %}</div>
                     <div class="stat-value" id="modal-total">0</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-label">Sinal Médio</div>
+                    <div class="stat-label">{% trans "Sinal Médio" %}</div>
                     <div class="stat-value" id="modal-avg">0%</div>
                 </div>
             </div>
 
             <div class="networks-list">
-                <h3 style="font-size: 16px; margin-bottom: 15px; color: #4a9eff;">Todas as Redes Detectadas:</h3>
+                <h3 style="font-size: 16px; margin-bottom: 15px; color: #4a9eff;">{% trans "Todas as Redes Detectadas:" %}</h3>
                 <div id="modal-networks"></div>
             </div>
         </div>
     </div>
 
     <script>
+        const i18nTexts = {
+            hidden: "{% trans 'Rede Oculta' %}",
+            channel: "{% trans 'Canal' %}"
+        };
+
         const scansData = {
             {% for scan in scans %}
                 {{ scan.id }}: {
@@ -441,13 +197,13 @@
             document.getElementById('modal-avg').textContent = `${scan.avg_signal}%`;
 
             let networksHtml = '';
-            scan.redes.forEach((network, index) => {
+            scan.redes.forEach((network) => {
                 const signalPercent = parseInt(network.signal) || 0;
                 networksHtml += `
                     <div class="network-detail">
                         <div class="network-detail-info">
-                            <div class="network-detail-ssid">${network.ssid || '🔒 Rede Oculta'}</div>
-                            <div class="network-detail-channel">Canal ${network.channel || 'N/A'}</div>
+                            <div class="network-detail-ssid">${network.ssid || `🔒 ${i18nTexts.hidden}`}</div>
+                            <div class="network-detail-channel">${i18nTexts.channel} ${network.channel || 'N/A'}</div>
                         </div>
                         <div class="network-detail-signal">
                             <div class="signal-bar-mini">
@@ -467,13 +223,12 @@
             document.getElementById('modal').classList.remove('active');
         }
 
-        // Fechar modal ao clicar fora dele
         document.getElementById('modal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
     </script>
+    <script src="{% static 'js/theme.js' %}"></script>
 </body>
 </html>
-    <script src="{% static 'js/theme.js' %}"></script>
