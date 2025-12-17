@@ -139,3 +139,20 @@ STATIC_URL = 'static/'
 
 # Login URL
 LOGIN_URL = 'login'
+
+
+import os
+from pathlib import Path
+
+# ... (outras configurações)
+
+# Onde o Django buscará arquivos estáticos durante o desenvolvimento
+STATIC_URL = 'static/'
+
+# A pasta para onde o Django copiará os arquivos estáticos para a produção
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# (Opcional) Se você tiver uma pasta de estáticos global
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
