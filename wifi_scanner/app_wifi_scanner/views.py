@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Usuario, WifiScan
 from .utils.wifi_scanner import scan_wifi_windows
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.translation import gettext_lazy as _
 
@@ -69,6 +70,7 @@ def wifi_scan(request):
     return JsonResponse({"networks": data})
 
 
+@csrf_exempt
 def save_wifi_scan(request):
     """Salva o scan de Wi-Fi com data e hora"""
     if 'usuario_id' not in request.session:

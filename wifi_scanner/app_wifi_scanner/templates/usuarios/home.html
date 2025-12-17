@@ -171,6 +171,44 @@
         .language-selector-wrapper {
             margin-right: 14px;
         }
+
+        .wifi-item.hidden-network {
+            display: none;
+        }
+
+        .expand-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: rgba(74, 158, 255, 0.15);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            color: var(--accent-color);
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .expand-btn:hover {
+            background: rgba(74, 158, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .expand-btn:active {
+            transform: translateY(0);
+        }
+
+        .expand-icon {
+            display: inline-block;
+            margin-left: 8px;
+            transition: transform 0.3s;
+        }
+
+        .expand-btn.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body>
@@ -299,13 +337,14 @@
             }, 4000);
         }
 
-        async function saveScan() {
+        async function saveScan(e) {
+            e.preventDefault();
             const btn = document.getElementById('btn-save-scan');
             btn.disabled = true;
             btn.textContent = `⏳ ${i18nTexts.saving}`;
             
             try {
-                const response = await fetch('/save-scan/', {
+                const response = await fetch('{% url "save_wifi_scan" %}', {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': getCookie('csrftoken')
@@ -342,10 +381,13 @@
             return cookieValue;
         }
 
-        document.getElementById('btn-save-scan').addEventListener('click', saveScan);
+        document.getElementById('btn-save-scan').addEventListener('click', function(e) {
+            e.preventDefault();
+            saveScan(e);
+        });
         
         document.getElementById('btn-historico').addEventListener('click', function() {
-            window.location.href = '/historico/';
+            window.location.href = '{% url "historico_scans" %}';
         });
 
         function updateTopNetworks(networks) {
@@ -448,11 +490,39 @@
             return recommended;
         }
 
+        const INITIAL_NETWORKS_SHOWN = 5;
+        let isExpanded = false;
+
+        function toggleNetworksList() {
+            const hiddenNetworks = document.querySelectorAll('.wifi-item.hidden-network');
+            const expandBtn = document.getElementById('expand-networks-btn');
+            
+            isExpanded = !isExpanded;
+            
+            hiddenNetworks.forEach(item => {
+                if (isExpanded) {
+                    item.classList.remove('hidden-network');
+                } else {
+                    item.classList.add('hidden-network');
+                }
+            });
+            
+            if (expandBtn) {
+                if (isExpanded) {
+                    expandBtn.innerHTML = `{% trans 'Mostrar Menos' %} <span class="expand-icon">▲</span>`;
+                    expandBtn.classList.add('expanded');
+                } else {
+                    expandBtn.innerHTML = `{% trans 'Mostrar Mais' %} <span class="expand-icon">▼</span>`;
+                    expandBtn.classList.remove('expanded');
+                }
+            }
+        }
+
         async function loadNetworks() {
             const container = document.getElementById("wifi-list");
             
             try {
-                const res = await fetch("/scan/");
+                const res = await fetch("{% url 'wifi_scan' %}");
                 const data = await res.json();
 
                 if (data.error) {
@@ -471,7 +541,7 @@
                 let inactiveCount = 0;
 
                 container.innerHTML = "";
-                data.networks.forEach(net => {
+                data.networks.forEach((net, index) => {
                     const signalPercent = parseInt(net.signal) || 0;
                     const channel = net.channel || 'N/A';
                     
@@ -481,8 +551,10 @@
                         inactiveCount++;
                     }
                     
+                    const hiddenClass = (index >= INITIAL_NETWORKS_SHOWN && !isExpanded) ? 'hidden-network' : '';
+                    
                     container.innerHTML += `
-                        <div class="wifi-item">
+                        <div class="wifi-item ${hiddenClass}">
                             <div class="wifi-main-info">
                                 <div class="wifi-ssid">${net.ssid || `🔒 ${i18nTexts.hiddenNetwork}`}</div>
                                 <div class="wifi-channel">${i18nTexts.channel} ${channel}</div>
@@ -496,6 +568,18 @@
                         </div>
                     `;
                 });
+
+                // Adicionar botão de expandir se houver mais redes que o limite inicial
+                if (data.networks.length > INITIAL_NETWORKS_SHOWN) {
+                    const expandBtnExists = document.getElementById('expand-networks-btn');
+                    if (!expandBtnExists) {
+                        container.innerHTML += `
+                            <button class="expand-btn" id="expand-networks-btn" onclick="toggleNetworksList()">
+                                {% trans 'Mostrar Mais' %} <span class="expand-icon">▼</span>
+                            </button>
+                        `;
+                    }
+                }
 
                 updateDonutChart(activeCount, inactiveCount);
                 document.getElementById('recommended-channel').textContent = getRecommendedChannel(data.networks);

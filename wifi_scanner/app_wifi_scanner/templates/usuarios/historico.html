@@ -101,7 +101,7 @@
                 {% for scan in scans %}
                     <div class="scan-card" onclick="openModal({{ scan.id }})">
                         <div class="scan-header">
-                            <div class="scan-titulo">{% blocktrans %}Scan #{{ scan.id }}{% endblocktrans %}</div>
+                            <div class="scan-titulo">{% trans "Scan" %} #{{ scan.id }}</div>
                             <div class="scan-data">📅 {{ scan.data_hora|date:"d/m/Y H:i:s" }}</div>
                         </div>
 
