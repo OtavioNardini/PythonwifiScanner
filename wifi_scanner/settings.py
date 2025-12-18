@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-bjl*f!svmhwjv31ruvz=s9$2c@ma+0#bi*700#i21+z*faz0!c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['morning-sea-73922-107caaebd70c.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['wifiscanner-7a622fe2e22f.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
