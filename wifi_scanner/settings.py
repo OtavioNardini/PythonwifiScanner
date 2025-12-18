@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',  # Para i18n - deve vir depois do Session e antes do Common
     'django.middleware.common.CommonMiddleware',
@@ -144,15 +145,18 @@ LOGIN_URL = 'login'
 import os
 from pathlib import Path
 
-# ... (outras configurações)
+# ...
 
-# Onde o Django buscará arquivos estáticos durante o desenvolvimento
 STATIC_URL = 'static/'
 
-# A pasta para onde o Django copiará os arquivos estáticos para a produção
+# Pasta onde o Heroku vai reunir todos os arquivos estáticos
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# (Opcional) Se você tiver uma pasta de estáticos global
+# Onde o Django deve procurar arquivos estáticos no seu projeto
+# Baseado na sua imagem, os arquivos estão em app_wifi_scanner/static
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'app_wifi_scanner', 'static'),
 ]
+
+# Configuração para compressão e cache (opcional, mas recomendado)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
